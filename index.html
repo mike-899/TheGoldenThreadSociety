@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Golden Thread Society</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e8e8e8;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navegación */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #e8e8e8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Secciones */
+        .section {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Home */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #b8b8b8;
+        }
+
+        .golden-thread {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 2rem auto;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+            to { box-shadow: 0 0 20px rgba(212, 175, 55, 0.8); }
+        }
+
+        /* About Us */
+        .about-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .about-intro h2 {
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid #d4af37;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .team-card:hover:before {
+            left: 100%;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            object-fit: cover;
+        }
+
+        .team-card h3 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .team-role {
+            color: #888;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        /* Comprar */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #444;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #333, #555);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #d4af37;
+            background-size: cover;
+            background-position: center;
+            background-size: contain; /* Changed from 'cover' to 'contain' */
+            image-rendering: -webkit-optimize-contrast; /* Webkit browsers (Chrome, Safari) */
+            image-rendering: crisp-edges; /* Firefox, IE/Edge */
+            image-rendering: pixelated; /* Modern browsers */
+            background-repeat: no-repeat;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: #b8b8b8;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .currency-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #d4af37;
+            background-repeat: no-repeat; /* Ensures the icon doesn't repeat */
+            background-position: center; /* Centers the icon */
+            image-rendering: pixelated; /* Modern browsers */
+            background-size: contain;
+        }
+
+        .currency-icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #1a1a1a;
+            font-weight: bold;
+            background: none; 
+            border-radius: 0;
+            border: none;
+            background-repeat: no-repeat; /* Ensures the icon doesn't repeat */
+            background-position: center; /* Centers the icon */
+            image-rendering: pixelated; /* Modern browsers */
+            background-size: contain;
+        }
+
+        .expanded-product {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .expanded-content {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            border: 2px solid #d4af37;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: #d4af37;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #f4d03f;
+        }
+
+        .expanded-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #333, #555);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #d4af37;
+            margin-bottom: 2rem;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-repeat: no-repeat; /* Ensures the icon doesn't repeat */
+            background-position: center; /* Centers the icon */
+            image-rendering: pixelated; /* Modern browsers */
+            background-size: contain;
+        }
+
+        .expanded-title {
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .expanded-description {
+            color: #e8e8e8;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Subsecciones */
+        .subsections {
+            margin-top: 2rem;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 0.5rem;
+        }
+
+        .subsection-item {
+            background: linear-gradient(145deg, #333, #222);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #555;
+            transition: all 0.3s ease;
+        }
+
+        .subsection-item:hover {
+            border-color: #d4af37;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .subsection-name {
+            font-size: 1.2rem;
+            color: #f4d03f;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+
+        .subsection-price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .shop-grid, .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .expanded-content {
+                padding: 2rem;
+                margin: 1rem;
+                max-width: 95%;
+            }
+
+            .subsection-price {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">The Golden Thread Society</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showSection('about')">About Us</a></li>
+                <li><a href="#" onclick="showSection('shop')">Comprar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="section active">
+        <div class="container">
+            <div class="hero">
+                <h1>The Golden Thread Society</h1>
+                <div class="golden-thread"></div>
+                <p>Conectando destinos a través de hilos dorados de sabiduría y elegancia</p>
+                <p>Únete a una sociedad exclusiva donde cada hilo cuenta una historia única y cada miembro forma parte de algo extraordinario.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="about-intro">
+                <h2>Conoce Nuestro Equipo</h2>
+                <p>The Golden Thread Society está liderada por visionarios que tejen el futuro con hilos de oro.</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <img class="team-avatar" src="Gael.png" alt="Gael Ponce">
+                    <h3>Gael Ponce</h3>
+                    <div class="team-role">Fundador</div>
+                    <p>Visionario y arquitecto de The Golden Thread Society. Gael fundó esta organización con la misión de crear conexiones significativas a través de experiencias exclusivas y productos únicos.</p>
+                </div>
+                
+                <div class="team-card">
+                    <img class="team-avatar" src="mike_899.png" alt="mike_899">
+                    <h3>mike_899</h3>
+                    <div class="team-role">Miembro Más Importante</div>
+                    <p>Pieza fundamental en el desarrollo y crecimiento de la sociedad. Su dedicación y liderazgo han sido clave para establecer los estándares de excelencia que nos caracterizan.</p>
+                </div>
+                
+                <div class="team-card">
+                    <img class="team-avatar" src="asdfg.png" alt="asdfg">
+                    <h3>asdfg</h3>
+                    <div class="team-role">Fuerte Aliado</div>
+                    <p>Socio estratégico cuya experiencia y recursos han fortalecido significativamente nuestra capacidad de ofrecer productos y servicios excepcionales a nuestros miembros.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="shop" class="section">
+        <div class="container">
+            <div class="about-intro">
+                <h2>Colección Exclusiva</h2>
+                <p>Descubre productos únicos disponibles solo para miembros de The Golden Thread Society.</p>
+            </div>
+            
+            <div class="shop-grid">
+                <div class="product-card" onclick="expandProduct('product1')">
+                    <div class="product-image" style="background-image: url('mejora-netherite.png');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Mejora de Netherite</div>
+                        <div class="product-description">Mejora cualquier pieza de diamante a una de Netherite.</div>
+                        <div class="product-price">
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('diamante.png');"></div>
+                                <span>15</span>
+                            </div>
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('piezaArmD.png');"></div>
+                                <span>1</span>
+                            </div>
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('netherite.png');"></div>
+                                <span>1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="expandProduct('product2')">
+                    <div class="product-image" style="background-image: url('elytras.png');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Elytras</div>
+                        <div class="product-description">Vuela! Tan solo dependes de fuegos artificiales.</div>
+                        <div class="product-price">
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('netherite.png');"></div>
+                                <span>1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="expandProduct('product3')">
+                    <div class="product-image" style="background-image: url('shulker.png');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Shulker Box</div>
+                        <div class="product-description">Cofres en un solo slot de inventario.</div>
+                        <div class="product-price">
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('diamante.png');"></div>
+                                <span>32</span>
+                            </div>
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('cofre.png');"></div>
+                                <span>1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="expandProduct('product4')">
+                    <div class="product-image" style="background-image: url('libro-encantado.png');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Encantamiento</div>
+                        <div class="product-description">Un libro, con el encantamiento de tu preferencia.</div>
+                        <div class="product-price">
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('diamante.png');"></div>
+                                <span>32</span>
+                            </div>
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('libro.png');"></div>
+                                <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="expandProduct('product5')">
+                    <div class="product-image" style="background-image: url('beacon.png');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Beacon</div>
+                        <div class="product-description">Estructura que te puede dar grandes efectos.</div>
+                        <div class="product-price">
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('hierro.png');"></div>
+                                <span>71</span>
+                            </div>
+                            <div class="currency-item">
+                                <div class="currency-icon" style="background-image: url('diamante.png');"></div>
+                                <span>64</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="expandProduct('product6')">
+                    <div class="product-image" style="background-image: url('tnt.png');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Servicio</div>
+                        <div class="product-description">Un servicio personalizado, a elección del cliente.</div>
+                        <div class="product-price">
+                            <div class="currency-item">
+                                <div class="currency-icon">/</div>
+                                <span>Precio a Ver</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="expandedProduct" class="expanded-product">
+        <div class="expanded-content">
+            <button class="close-btn" onclick="closeExpanded()">&times;</button>
+            <div id="expandedImage" class="expanded-image"></div>
+            <h2 id="expandedTitle" class="expanded-title"></h2>
+            <p id="expandedDescription" class="expanded-description"></p>
+            <div id="expandedPrice" class="product-price"></div>
+            <div id="expandedSubsections" class="subsections"></div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            document.getElementById(sectionName).classList.add('active');
+            
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeLink = document.querySelector(`.nav-links a[onclick*="${sectionName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        // Product data
+        const products = {
+            product1: {
+                name: "Mejora de Netherite",
+                image: "mejora-netherite.png",
+                description: "Mejora cualquier pieza de diamante a una de Netherite.",
+                currencies: [
+                    { icon: "diamante.png", amount: 15 },
+                    { icon: "piezaArmD.png", amount: 1 },
+                    { icon: "netherite.png", amount: 1 }
+                ]
+            },
+            product2: {
+                name: "Elytras",
+                image: "elytras.png",
+                description: "Vuela! Tan solo dependes de fuegos artificiales.",
+                currencies: [
+                    { icon: "netherite.png", amount: 1 }
+                ],
+                subsections: [
+                    {
+                        name: "Normal",
+                        currencies: [
+                            { icon: "netherite.png", amount: 1 }
+                        ]
+                    },
+                    {
+                        name: "Mending",
+                        currencies: [
+                            { icon: "netherite.png", amount: 1 },
+                            { icon: "diamante.png", amount: 45 }
+                        ]
+                    }
+                ]
+            },
+            product3: {
+                name: "Shulker Box",
+                image: "shulker.png",
+                description: "Cofres en un solo slot de inventario.",
+                currencies: [
+                    { icon: "diamante.png", amount: 32 },
+                    { icon: "cofre.png", amount: 1 }
+                ]
+            },
+            product4: {
+                name: "Encantamiento",
+                image: "libro-encantado.png",
+                description: "Un libro, con el encantamiento de tu preferencia.",
+                currencies: [
+                    { icon: "diamante.png", amount: "32" },
+                    { icon: "libro.png", amount: 2 }
+                ],
+                subsections: [
+                    {
+                        name: "Basico",
+                        currencies: [
+                            { icon: "diamante.png", amount: 32 },
+                            { icon: "libro.png", amount: 2 }
+                        ]
+                    },
+                    {
+                        name: "Avanzado",
+                        currencies: [
+                            { icon: "diamante.png", amount: 64 },
+                            { icon: "libro.png", amount: 2 }
+                        ]
+                    }
+                ]
+            },
+            product5: {
+                name: "Beacon",
+                image: "beacon.png",
+                description: "Estructura que te puede dar grandes efectos.",
+                currencies: [
+                    { icon: "hierro.png", amount: "71" },
+                    { icon: "diamante.png", amount: "64" }
+                ],
+                subsections: [
+                    {
+                        name: "Nivel 1",
+                        currencies: [
+                            { icon: "hierro.png", amount: 71 },
+                            { icon: "diamante.png", amount: 64 }
+                        ]
+                    },
+                    {
+                        name: "Nivel 2",
+                        currencies: [
+                            { icon: "hierro.png", amount: 256 },
+                            { icon: "netherite.png", amount: 1 }
+                        ]
+                    },
+                    {
+                        name: "Nivel 3",
+                        currencies: [
+                            { icon: "hierro.png", amount: 647 },
+                            { icon: "diamante.png", amount: 32 },
+                            { icon: "netherite.png", amount: 1 }
+                        ]
+                    },
+                    {
+                        name: "Nivel 4",
+                        currencies: [
+                            { icon: "hierro.png", amount: 1200 },
+                            { icon: "netherite.png", amount: 3 }
+                        ]
+                    }
+                ]
+            },
+            product6: {
+                name: "Servicio",
+                image: "tnt.png",
+                description: "Un servicio personalizado, a elección del cliente.",
+                currencies: [
+                    { icon: "/", amount: "Precio a Ver" }
+                ]
+            }
+        };
+
+        function expandProduct(productId) {
+            const product = products[productId];
+            const modal = document.getElementById('expandedProduct');
+            
+            document.getElementById('expandedImage').style.backgroundImage = `url('${product.image}')`;
+            document.getElementById('expandedTitle').textContent = product.name;
+            document.getElementById('expandedDescription').textContent = product.description;
+            
+            // Create price display
+            const priceContainer = document.getElementById('expandedPrice');
+            priceContainer.innerHTML = '';
+            product.currencies.forEach(currency => {
+                const currencyItem = document.createElement('div');
+                currencyItem.className = 'currency-item';
+                
+                let iconContent;
+                if (currency.icon.endsWith('.png')) {
+                    iconContent = `<div class="currency-icon" style="background-image: url('${currency.icon}');"></div>`;
+                } else {
+                    iconContent = `<div class="currency-icon">${currency.icon}</div>`;
+                }
+
+                currencyItem.innerHTML = `
+                    ${iconContent}
+                    <span>${currency.amount}</span>
+                `;
+                priceContainer.appendChild(currencyItem);
+            });
+            
+            // Create subsections if they exist
+            const subsectionsContainer = document.getElementById('expandedSubsections');
+            subsectionsContainer.innerHTML = '';
+            
+            if (product.subsections) {
+                const subsectionTitle = document.createElement('div');
+                subsectionTitle.className = 'subsection-title';
+                subsectionTitle.textContent = 'Opciones Disponibles';
+                subsectionsContainer.appendChild(subsectionTitle);
+                
+                product.subsections.forEach(subsection => {
+                    const subsectionItem = document.createElement('div');
+                    subsectionItem.className = 'subsection-item';
+                    
+                    const subsectionName = document.createElement('div');
+                    subsectionName.className = 'subsection-name';
+                    subsectionName.textContent = subsection.name;
+                    subsectionItem.appendChild(subsectionName);
+                    
+                    const subsectionPrice = document.createElement('div');
+                    subsectionPrice.className = 'subsection-price';
+                    
+                    subsection.currencies.forEach(currency => {
+                        const currencyItem = document.createElement('div');
+                        currencyItem.className = 'currency-item';
+                        
+                        let iconContent;
+                        if (currency.icon.endsWith('.png')) {
+                            iconContent = `<div class="currency-icon" style="background-image: url('${currency.icon}');"></div>`;
+                        } else {
+                            iconContent = `<div class="currency-icon">${currency.icon}</div>`;
+                        }
+
+                        currencyItem.innerHTML = `
+                            ${iconContent}
+                            <span>${currency.amount}</span>
+                        `;
+                        subsectionPrice.appendChild(currencyItem);
+                    });
+                    
+                    subsectionItem.appendChild(subsectionPrice);
+                    subsectionsContainer.appendChild(subsectionItem);
+                });
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeExpanded() {
+            document.getElementById('expandedProduct').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('expandedProduct').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExpanded();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeExpanded();
+            }
+        });
+    </script>
+</body>
+</html>
